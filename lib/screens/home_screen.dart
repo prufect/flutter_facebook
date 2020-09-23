@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook/config/palette.dart';
+import 'package:flutter_facebook/data/data.dart';
 import 'package:flutter_facebook/widgets/circle_button.dart';
+import 'package:flutter_facebook/widgets/create_post_container.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -33,7 +35,10 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {},
               ),
             ],
-          )
+          ),
+          SliverToBoxAdapter(
+            child: CreatePostContainer(currentUser: currentUser),
+          ),
         ],
       ),
     );
