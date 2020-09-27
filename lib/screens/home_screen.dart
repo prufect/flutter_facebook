@@ -10,15 +10,31 @@ import 'package:flutter_facebook/widgets/rooms.dart';
 import 'package:flutter_facebook/widgets/stories.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final TrackingScrollController _trackingScrollController =
+      TrackingScrollController();
+
+  @override
+  void dispose() {
+    _trackingScrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         body: Responsive(
-          mobile: _HomeScreenMobile(),
-          desktop: _HomeScreenDesktop(),
+          mobile: _HomeScreenMobile(
+              trackingScrollController: _trackingScrollController),
+          desktop: _HomeScreenDesktop(
+              trackingScrollController: _trackingScrollController),
         ),
       ),
     );
@@ -26,9 +42,17 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _HomeScreenMobile extends StatelessWidget {
+  final TrackingScrollController trackingScrollController;
+
+  const _HomeScreenMobile({
+    Key key,
+    @required this.trackingScrollController,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      controller: trackingScrollController,
       slivers: [
         SliverAppBar(
           title: Text(
@@ -85,6 +109,13 @@ class _HomeScreenMobile extends StatelessWidget {
 }
 
 class _HomeScreenDesktop extends StatelessWidget {
+  final TrackingScrollController trackingScrollController;
+
+  const _HomeScreenDesktop({
+    Key key,
+    @required this.trackingScrollController,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -99,9 +130,10 @@ class _HomeScreenDesktop extends StatelessWidget {
         Container(
           width: 600,
           child: CustomScrollView(
+            controller: trackingScrollController,
             slivers: [
               SliverPadding(
-                padding: EdgeInsets.fromLTRB(0, 5.0, 0, 5.0),
+                padding: EdgeInsets.fromLTRB(0, 20.0, 0, 10.0),
                 sliver: SliverToBoxAdapter(
                   child: Stories(currentUser: currentUser, stories: stories),
                 ),
